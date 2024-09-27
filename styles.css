@@ -1,0 +1,140 @@
+/* styles.css */
+
+/* Estilo global para el cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal */
+div {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los encabezados */
+h1 {
+    font-size: 2em;
+    color: #333;
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.5em;
+    color: #555;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 1.2em;
+    color: #777;
+    margin-top: 20px;
+}
+
+/* Estilo para párrafos */
+p {
+    margin: 10px 0;
+}
+
+/* Estilo para enlaces */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para listas */
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Espaciado adicional para listas */
+ul li {
+    padding-left: 10px;
+    position: relative;
+}
+
+ul li::before {
+    content: "•";
+    color: #3498db;
+    position: absolute;
+    left: 0;
+}
+
+/* Espaciado para párrafos dentro de listas */
+ul p {
+    margin: 0;
+}
+
+/* Estilo para el contenedor del código */
+pre {
+    background-color: #f0f0f0; /* Color de fondo del código */
+    padding: 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    overflow: auto; /* Para permitir el desplazamiento si el contenido es muy largo */
+    font-family: 'Courier New', Courier, monospace; /* Fuente monoespaciada para código */
+}
+
+/* Estilo para el texto dentro del código */
+code {
+    color: #c7254e; /* Color del texto del código */
+    background-color: #f9f2f4; /* Fondo ligeramente diferente para el texto del código */
+    padding: 2px 4px; /* Espaciado interno */
+    border-radius: 3px; /* Bordes redondeados */
+}
+
+
+/* Estilo general para la tabla */
+table {
+    width: 100%; /* Hace que la tabla ocupe el 100% del ancho del contenedor */
+    border-collapse: collapse; /* Combina bordes adyacentes */
+    margin: 20px 0; /* Espaciado vertical alrededor de la tabla */
+}
+
+/* Estilo para las celdas de la tabla */
+th, td {
+    padding: 12px; /* Espaciado interno de las celdas */
+    text-align: left; /* Alineación del texto a la izquierda */
+    border: 1px solid #ddd; /* Bordes suaves alrededor de las celdas */
+}
+
+/* Estilo para los encabezados de la tabla */
+th {
+    background-color: #4CAF50; /* Color de fondo verde */
+    color: white; /* Color de texto blanco */
+    font-weight: bold; /* Texto en negrita */
+}
+
+/* Estilo para las filas alternas de la tabla */
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Color de fondo gris claro para filas pares */
+}
+
+/* Estilo para las filas al pasar el ratón */
+tr:hover {
+    background-color: #ddd; /* Color de fondo gris claro al pasar el ratón */
+}
+
+/* Estilo para las celdas de la tabla en dispositivos móviles */
+@media (max-width: 600px) {
+    th, td {
+        padding: 8px; /* Reduce el espaciado en pantallas pequeñas */
+        font-size: 14px; /* Tamaño de fuente más pequeño */
+    }
+}
