@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Componente Inteligencia Artificial</title>
+        <link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
     </head>
     
     <body>
@@ -60,6 +61,165 @@
                 Enlace a google colab del trabajo realizado sobre redes neuronales:
                 <a href="https://colab.research.google.com/drive/1a1GiMzTBgMzd5mNtU0s8PRblPTdVC1J2?usp=sharing">Código Google Colab Redes Neuronales.</a>
             </p>
+        </div>
+
+        <div>
+            <h1>Parcial 26 de Septiembre</h1>
+
+            <h2>Punto 3. Tabla de resultados obtenidos con algoritmo de python para 3 laberintos.</h2>
+            <table border="1">
+                <tr>
+                  <th>Laberinto</th>
+                  <th>Algoritmo</th>
+                  <th>Estados Explorados</th>
+                  <th>Longitud de la Solución</th>
+                  <th>Eficiencia General</th>
+                </tr>
+                <tr>
+                  <td rowspan="2">Laberinto Grupo2</td>
+                  <td>DFS</td>
+                  <td>504</td>
+                  <td>43</td>
+                  <td>Menor eficiencia en exploración, ya que DFS explora profundamente, no garantiza el camino óptimo.</td>
+                </tr>
+                <tr>
+                  <td>BFS</td>
+                  <td>504</td>
+                  <td>43</td>
+                  <td>Explora más ampliamente, pero garantiza el camino más corto, aunque con más tiempo de ejecución.</td>
+                </tr>
+                <tr>
+                  <td rowspan="2">Laberinto Grupo1</td>
+                  <td>DFS</td>
+                  <td>425</td>
+                  <td>38</td>
+                  <td>Similar comportamiento a BFS, aunque puede explorar caminos más largos inicialmente.</td>
+                </tr>
+                <tr>
+                  <td>BFS</td>
+                  <td>425</td>
+                  <td>38</td>
+                  <td>Mejor para encontrar el camino óptimo, pero con más estados revisados si el camino es largo.</td>
+                </tr>
+                <tr>
+                  <td rowspan="2">Laberinto WhatsApp</td>
+                  <td>DFS</td>
+                  <td>298</td>
+                  <td>29</td>
+                  <td>Eficiente en este laberinto pequeño, pero podría no encontrar el camino más corto en otros casos.</td>
+                </tr>
+                <tr>
+                  <td>BFS</td>
+                  <td>298</td>
+                  <td>29</td>
+                  <td>Más eficiente para laberintos pequeños, garantizando el camino más corto sin sobreexploración.</td>
+                </tr>
+              </table>              
+
+              <div>
+                <h2>Punto 4. Código de Red Neuronal en Google Colab Comentado</h2>
+                <pre>
+                    <code>
+            import tensorflow as tf
+            # Se importa el paquete TensorFlow y se le asigna el alias 'tf'.
+            
+            import numpy as np
+            # Se importa el paquete NumPy y se le asigna el alias 'np'. 
+            
+            celsius = np.array([-40, -10, 0, 8, 15, 22, 38], dtype=float)
+            # Se crea un arreglo de números que representan temperaturas en grados Celsius utilizando la función 'np.array' de NumPy.
+            
+            fahrenheit = np.array([-40, 14, 32, 46, 59, 72, 100], dtype=float)
+            # Se crea un arreglo de números que representan temperaturas en grados Fahrenheit utilizando la función 'np.array'.
+            
+            oculta1 = tf.keras.layers.Dense(units=3, input_shape=[1])
+            # Se crea una capa "dense" (fully connected) con 3 neuronas ('units=3') utilizando la API de Keras de TensorFlow.
+            # 'input_shape=[1]' especifica que la entrada tiene una sola característica (un solo valor por dato de entrada).
+            
+            oculta2 = tf.keras.layers.Dense(units=3)
+            # Se crea una segunda capa densa con 3 neuronas. 
+            # No es necesario definir el 'input_shape' aquí, ya que se deduce automáticamente de la capa anterior.
+            
+            salida = tf.keras.layers.Dense(units=1)
+            # Se define la capa de salida con una sola neurona ('units=1'), que generará la predicción del modelo.
+            
+            modelo = tf.keras.Sequential([oculta1, oculta2, salida])
+            # Se crea el modelo secuencial de Keras, que consiste en una pila de capas definidas anteriormente.
+            # Las capas se apilan en el orden en que son mencionadas: primero 'oculta1', luego 'oculta2', y finalmente la capa 'salida'.
+            
+            modelo.compile(
+                optimizer=tf.keras.optimizers.Adam(0.1),
+                # Se compila el modelo especificando el optimizador y la función de pérdida.
+                # El optimizador utilizado es Adam, que es un algoritmo de optimización eficiente para el entrenamiento de redes neuronales.
+                # El parámetro '0.1' es la tasa de aprendizaje (learning rate), que controla qué tan grande es el paso que el optimizador
+                # da en cada actualización de los pesos del modelo.
+            
+                loss='mean_squared_error'
+                # La función de pérdida que se usará es el 'mean_squared_error' (error cuadrático medio).
+                # Esta función mide la diferencia entre las predicciones del modelo y los valores reales, siendo útil para problemas de regresión.
+            )
+            
+            print("Comenzando entrenamiento...")
+            # Imprime un mensaje en la consola indicando que el entrenamiento del modelo está por comenzar.
+            
+            historial = modelo.fit(celsius, fahrenheit, epochs=1000, verbose=False)
+            # Entrena el modelo utilizando los datos de entrada ('celsius') y las etiquetas de salida ('fahrenheit').
+            # El modelo ajustará sus parámetros a lo largo de 1000 épocas ('epochs=1000'), donde cada época es un ciclo completo sobre los datos de entrenamiento.
+            # 'verbose=False' significa que no se mostrará información detallada sobre el proceso de entrenamiento en cada época.
+            # El resultado del entrenamiento (el historial de métricas) se almacena en la variable 'historial'.
+            
+            print("Modelo entrenado!")
+            # Imprime un mensaje en la consola indicando que el modelo ha sido entrenado con éxito.
+            
+            import matplotlib.pyplot as plt
+            # Se importa la biblioteca Matplotlib y se le asigna el alias 'plt'.
+            # Matplotlib es utilizada para crear gráficos y visualizaciones de datos en Python.
+            
+            plt.xlabel("# Epoca")
+            # Establece la etiqueta del eje x del gráfico como "# Epoca", indicando que este eje representará el número de épocas.
+            
+            plt.ylabel("Magnitud de pérdida")
+            # Establece la etiqueta del eje y del gráfico como "Magnitud de pérdida", indicando que este eje representará el valor de la pérdida (error).
+            
+            plt.plot(historial.history["loss"])
+            # Se grafica la evolución de la pérdida a lo largo de las épocas. 'historial.history["loss"]' contiene los valores de la función de pérdida
+            # para cada época durante el entrenamiento del modelo.
+            # El gráfico mostrará cómo el error (pérdida) disminuye conforme avanza el entrenamiento.
+            
+            print("Hagamos una predicción!")
+            # Imprime un mensaje en la consola indicando que se va a realizar una predicción con el modelo entrenado.
+            
+            resultado = modelo.predict([100.0])
+            # Utiliza el método 'predict' del modelo para hacer una predicción. 
+            # Se pasa un arreglo con el valor 100.0 como entrada, que corresponde a una temperatura en grados Celsius.
+            # El modelo devuelve una predicción de la temperatura correspondiente en grados Fahrenheit.
+            
+            print("El resultado es " + str(resultado) + " fahrenheit!")
+            # Imprime el resultado de la predicción, convirtiendo el valor de 'resultado' a una cadena con 'str()' para poder concatenarlo con el mensaje.
+            # El mensaje final muestra el valor predicho en grados Fahrenheit.
+            
+            print("Variables internas del modelo")
+            # Imprime un mensaje en la consola indicando que se van a mostrar las variables internas (pesos) del modelo.
+            
+            #print(capa.get_weights())
+            # Esta línea está comentada y no se ejecutará. Si estuviera activa, intentaría obtener y mostrar los pesos de una capa llamada 'capa'.
+            # El método 'get_weights()' devuelve los pesos y sesgos de la capa, que son los parámetros que el modelo ajusta durante el entrenamiento.
+            
+            print(oculta1.get_weights())
+            # Llama al método 'get_weights()' en la primera capa oculta ('oculta1') para obtener y mostrar sus pesos y sesgos.
+            # Esto permitirá ver cómo el modelo ha aprendido a representar la relación entre la entrada (Celsius) y la salida (Fahrenheit).
+            
+            print(oculta2.get_weights())
+            # Llama al método 'get_weights()' en la segunda capa oculta ('oculta2') para obtener y mostrar sus pesos y sesgos.
+            # Esto mostrará los parámetros de la segunda capa oculta del modelo.
+            
+            print(salida.get_weights())
+            # Llama al método 'get_weights()' en la capa de salida ('salida') para obtener y mostrar sus pesos y sesgos.
+            # Esto permitirá ver cómo la capa de salida está configurada para transformar la representación interna en la predicción final.
+                    </code>
+                </pre>
+            </div>            
+
         </div>
 
     </body>
