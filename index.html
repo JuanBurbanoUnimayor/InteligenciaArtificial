@@ -120,102 +120,102 @@
                 <h2>Punto 4. Código de Red Neuronal en Google Colab Comentado</h2>
                 <pre>
                     <code>
-            import tensorflow as tf
-            # Se importa el paquete TensorFlow y se le asigna el alias 'tf'.
-            
-            import numpy as np
-            # Se importa el paquete NumPy y se le asigna el alias 'np'. 
-            
-            celsius = np.array([-40, -10, 0, 8, 15, 22, 38], dtype=float)
-            # Se crea un arreglo de números que representan temperaturas en grados Celsius utilizando la función 'np.array' de NumPy.
-            
-            fahrenheit = np.array([-40, 14, 32, 46, 59, 72, 100], dtype=float)
-            # Se crea un arreglo de números que representan temperaturas en grados Fahrenheit utilizando la función 'np.array'.
-            
-            oculta1 = tf.keras.layers.Dense(units=3, input_shape=[1])
-            # Se crea una capa "dense" (fully connected) con 3 neuronas ('units=3') utilizando la API de Keras de TensorFlow.
-            # 'input_shape=[1]' especifica que la entrada tiene una sola característica (un solo valor por dato de entrada).
-            
-            oculta2 = tf.keras.layers.Dense(units=3)
-            # Se crea una segunda capa densa con 3 neuronas. 
-            # No es necesario definir el 'input_shape' aquí, ya que se deduce automáticamente de la capa anterior.
-            
-            salida = tf.keras.layers.Dense(units=1)
-            # Se define la capa de salida con una sola neurona ('units=1'), que generará la predicción del modelo.
-            
-            modelo = tf.keras.Sequential([oculta1, oculta2, salida])
-            # Se crea el modelo secuencial de Keras, que consiste en una pila de capas definidas anteriormente.
-            # Las capas se apilan en el orden en que son mencionadas: primero 'oculta1', luego 'oculta2', y finalmente la capa 'salida'.
-            
-            modelo.compile(
-                optimizer=tf.keras.optimizers.Adam(0.1),
-                # Se compila el modelo especificando el optimizador y la función de pérdida.
-                # El optimizador utilizado es Adam, que es un algoritmo de optimización eficiente para el entrenamiento de redes neuronales.
-                # El parámetro '0.1' es la tasa de aprendizaje (learning rate), que controla qué tan grande es el paso que el optimizador
-                # da en cada actualización de los pesos del modelo.
-            
-                loss='mean_squared_error'
-                # La función de pérdida que se usará es el 'mean_squared_error' (error cuadrático medio).
-                # Esta función mide la diferencia entre las predicciones del modelo y los valores reales, siendo útil para problemas de regresión.
-            )
-            
-            print("Comenzando entrenamiento...")
-            # Imprime un mensaje en la consola indicando que el entrenamiento del modelo está por comenzar.
-            
-            historial = modelo.fit(celsius, fahrenheit, epochs=1000, verbose=False)
-            # Entrena el modelo utilizando los datos de entrada ('celsius') y las etiquetas de salida ('fahrenheit').
-            # El modelo ajustará sus parámetros a lo largo de 1000 épocas ('epochs=1000'), donde cada época es un ciclo completo sobre los datos de entrenamiento.
-            # 'verbose=False' significa que no se mostrará información detallada sobre el proceso de entrenamiento en cada época.
-            # El resultado del entrenamiento (el historial de métricas) se almacena en la variable 'historial'.
-            
-            print("Modelo entrenado!")
-            # Imprime un mensaje en la consola indicando que el modelo ha sido entrenado con éxito.
-            
-            import matplotlib.pyplot as plt
-            # Se importa la biblioteca Matplotlib y se le asigna el alias 'plt'.
-            # Matplotlib es utilizada para crear gráficos y visualizaciones de datos en Python.
-            
-            plt.xlabel("# Epoca")
-            # Establece la etiqueta del eje x del gráfico como "# Epoca", indicando que este eje representará el número de épocas.
-            
-            plt.ylabel("Magnitud de pérdida")
-            # Establece la etiqueta del eje y del gráfico como "Magnitud de pérdida", indicando que este eje representará el valor de la pérdida (error).
-            
-            plt.plot(historial.history["loss"])
-            # Se grafica la evolución de la pérdida a lo largo de las épocas. 'historial.history["loss"]' contiene los valores de la función de pérdida
-            # para cada época durante el entrenamiento del modelo.
-            # El gráfico mostrará cómo el error (pérdida) disminuye conforme avanza el entrenamiento.
-            
-            print("Hagamos una predicción!")
-            # Imprime un mensaje en la consola indicando que se va a realizar una predicción con el modelo entrenado.
-            
-            resultado = modelo.predict([100.0])
-            # Utiliza el método 'predict' del modelo para hacer una predicción. 
-            # Se pasa un arreglo con el valor 100.0 como entrada, que corresponde a una temperatura en grados Celsius.
-            # El modelo devuelve una predicción de la temperatura correspondiente en grados Fahrenheit.
-            
-            print("El resultado es " + str(resultado) + " fahrenheit!")
-            # Imprime el resultado de la predicción, convirtiendo el valor de 'resultado' a una cadena con 'str()' para poder concatenarlo con el mensaje.
-            # El mensaje final muestra el valor predicho en grados Fahrenheit.
-            
-            print("Variables internas del modelo")
-            # Imprime un mensaje en la consola indicando que se van a mostrar las variables internas (pesos) del modelo.
-            
-            #print(capa.get_weights())
-            # Esta línea está comentada y no se ejecutará. Si estuviera activa, intentaría obtener y mostrar los pesos de una capa llamada 'capa'.
-            # El método 'get_weights()' devuelve los pesos y sesgos de la capa, que son los parámetros que el modelo ajusta durante el entrenamiento.
-            
-            print(oculta1.get_weights())
-            # Llama al método 'get_weights()' en la primera capa oculta ('oculta1') para obtener y mostrar sus pesos y sesgos.
-            # Esto permitirá ver cómo el modelo ha aprendido a representar la relación entre la entrada (Celsius) y la salida (Fahrenheit).
-            
-            print(oculta2.get_weights())
-            # Llama al método 'get_weights()' en la segunda capa oculta ('oculta2') para obtener y mostrar sus pesos y sesgos.
-            # Esto mostrará los parámetros de la segunda capa oculta del modelo.
-            
-            print(salida.get_weights())
-            # Llama al método 'get_weights()' en la capa de salida ('salida') para obtener y mostrar sus pesos y sesgos.
-            # Esto permitirá ver cómo la capa de salida está configurada para transformar la representación interna en la predicción final.
+import tensorflow as tf
+# Se importa el paquete TensorFlow y se le asigna el alias 'tf'.
+
+import numpy as np
+# Se importa el paquete NumPy y se le asigna el alias 'np'. 
+
+celsius = np.array([-40, -10, 0, 8, 15, 22, 38], dtype=float)
+# Se crea un arreglo de números que representan temperaturas en grados Celsius utilizando la función 'np.array' de NumPy.
+
+fahrenheit = np.array([-40, 14, 32, 46, 59, 72, 100], dtype=float)
+# Se crea un arreglo de números que representan temperaturas en grados Fahrenheit utilizando la función 'np.array'.
+
+oculta1 = tf.keras.layers.Dense(units=3, input_shape=[1])
+# Se crea una capa "dense" (fully connected) con 3 neuronas ('units=3') utilizando la API de Keras de TensorFlow.
+# 'input_shape=[1]' especifica que la entrada tiene una sola característica (un solo valor por dato de entrada).
+
+oculta2 = tf.keras.layers.Dense(units=3)
+# Se crea una segunda capa densa con 3 neuronas. 
+# No es necesario definir el 'input_shape' aquí, ya que se deduce automáticamente de la capa anterior.
+
+salida = tf.keras.layers.Dense(units=1)
+# Se define la capa de salida con una sola neurona ('units=1'), que generará la predicción del modelo.
+
+modelo = tf.keras.Sequential([oculta1, oculta2, salida])
+# Se crea el modelo secuencial de Keras, que consiste en una pila de capas definidas anteriormente.
+# Las capas se apilan en el orden en que son mencionadas: primero 'oculta1', luego 'oculta2', y finalmente la capa 'salida'.
+
+modelo.compile(
+    optimizer=tf.keras.optimizers.Adam(0.1),
+    # Se compila el modelo especificando el optimizador y la función de pérdida.
+    # El optimizador utilizado es Adam, que es un algoritmo de optimización eficiente para el entrenamiento de redes neuronales.
+    # El parámetro '0.1' es la tasa de aprendizaje (learning rate), que controla qué tan grande es el paso que el optimizador
+    # da en cada actualización de los pesos del modelo.
+
+    loss='mean_squared_error'
+    # La función de pérdida que se usará es el 'mean_squared_error' (error cuadrático medio).
+    # Esta función mide la diferencia entre las predicciones del modelo y los valores reales, siendo útil para problemas de regresión.
+)
+
+print("Comenzando entrenamiento...")
+# Imprime un mensaje en la consola indicando que el entrenamiento del modelo está por comenzar.
+
+historial = modelo.fit(celsius, fahrenheit, epochs=1000, verbose=False)
+# Entrena el modelo utilizando los datos de entrada ('celsius') y las etiquetas de salida ('fahrenheit').
+# El modelo ajustará sus parámetros a lo largo de 1000 épocas ('epochs=1000'), donde cada época es un ciclo completo sobre los datos de entrenamiento.
+# 'verbose=False' significa que no se mostrará información detallada sobre el proceso de entrenamiento en cada época.
+# El resultado del entrenamiento (el historial de métricas) se almacena en la variable 'historial'.
+
+print("Modelo entrenado!")
+# Imprime un mensaje en la consola indicando que el modelo ha sido entrenado con éxito.
+
+import matplotlib.pyplot as plt
+# Se importa la biblioteca Matplotlib y se le asigna el alias 'plt'.
+# Matplotlib es utilizada para crear gráficos y visualizaciones de datos en Python.
+
+plt.xlabel("# Epoca")
+# Establece la etiqueta del eje x del gráfico como "# Epoca", indicando que este eje representará el número de épocas.
+
+plt.ylabel("Magnitud de pérdida")
+# Establece la etiqueta del eje y del gráfico como "Magnitud de pérdida", indicando que este eje representará el valor de la pérdida (error).
+
+plt.plot(historial.history["loss"])
+# Se grafica la evolución de la pérdida a lo largo de las épocas. 'historial.history["loss"]' contiene los valores de la función de pérdida
+# para cada época durante el entrenamiento del modelo.
+# El gráfico mostrará cómo el error (pérdida) disminuye conforme avanza el entrenamiento.
+
+print("Hagamos una predicción!")
+# Imprime un mensaje en la consola indicando que se va a realizar una predicción con el modelo entrenado.
+
+resultado = modelo.predict([100.0])
+# Utiliza el método 'predict' del modelo para hacer una predicción. 
+# Se pasa un arreglo con el valor 100.0 como entrada, que corresponde a una temperatura en grados Celsius.
+# El modelo devuelve una predicción de la temperatura correspondiente en grados Fahrenheit.
+
+print("El resultado es " + str(resultado) + " fahrenheit!")
+# Imprime el resultado de la predicción, convirtiendo el valor de 'resultado' a una cadena con 'str()' para poder concatenarlo con el mensaje.
+# El mensaje final muestra el valor predicho en grados Fahrenheit.
+
+print("Variables internas del modelo")
+# Imprime un mensaje en la consola indicando que se van a mostrar las variables internas (pesos) del modelo.
+
+#print(capa.get_weights())
+# Esta línea está comentada y no se ejecutará. Si estuviera activa, intentaría obtener y mostrar los pesos de una capa llamada 'capa'.
+# El método 'get_weights()' devuelve los pesos y sesgos de la capa, que son los parámetros que el modelo ajusta durante el entrenamiento.
+
+print(oculta1.get_weights())
+# Llama al método 'get_weights()' en la primera capa oculta ('oculta1') para obtener y mostrar sus pesos y sesgos.
+# Esto permitirá ver cómo el modelo ha aprendido a representar la relación entre la entrada (Celsius) y la salida (Fahrenheit).
+
+print(oculta2.get_weights())
+# Llama al método 'get_weights()' en la segunda capa oculta ('oculta2') para obtener y mostrar sus pesos y sesgos.
+# Esto mostrará los parámetros de la segunda capa oculta del modelo.
+
+print(salida.get_weights())
+# Llama al método 'get_weights()' en la capa de salida ('salida') para obtener y mostrar sus pesos y sesgos.
+# Esto permitirá ver cómo la capa de salida está configurada para transformar la representación interna en la predicción final.
                     </code>
                 </pre>
             </div>            
@@ -229,130 +229,130 @@
             <p> A continuación se presenta el código relacionado al juego Tic Tac Toe, las funciones y procedimientos que utiliza para su ejecución. </p>
             <pre>
                 <code>
-                    import math
+import math
 
-                    # Definir los jugadores
-                    HUMANO = -1
-                    COMPUTADORA = 1
-                    
-                    # Crear el tablero vacío
-                    tablero = [
-                        [0, 0, 0],
-                        [0, 0, 0],
-                        [0, 0, 0]
-                    ]
-                    
-                    # Función para verificar si hay un ganador
-                    def ganador(tablero, jugador):
-                        win_state = [
-                            [tablero[0][0], tablero[0][1], tablero[0][2]],
-                            [tablero[1][0], tablero[1][1], tablero[1][2]],
-                            [tablero[2][0], tablero[2][1], tablero[2][2]],
-                            [tablero[0][0], tablero[1][0], tablero[2][0]],
-                            [tablero[0][1], tablero[1][1], tablero[2][1]],
-                            [tablero[0][2], tablero[1][2], tablero[2][2]],
-                            [tablero[0][0], tablero[1][1], tablero[2][2]],
-                            [tablero[2][0], tablero[1][1], tablero[0][2]],
-                        ]
-                        return [jugador, jugador, jugador] in win_state
-                    
-                    # Función para verificar si el tablero está lleno
-                    def tablero_lleno(tablero):
-                        for fila in tablero:
-                            if 0 in fila:
-                                return False
-                        return True
-                    
-                    # Evaluar el estado del tablero
-                    def evaluar(tablero):
-                        if ganador(tablero, COMPUTADORA):
-                            return 1
-                        elif ganador(tablero, HUMANO):
-                            return -1
-                        else:
-                            return 0
-                    
-                    # Algoritmo Minimax
-                    def minimax(tablero, profundidad, jugador):
-                        if ganador(tablero, COMPUTADORA):
-                            return 1
-                        if ganador(tablero, HUMANO):
-                            return -1
-                        if tablero_lleno(tablero):
-                            return 0
-                    
-                        if jugador == COMPUTADORA:
-                            mejor = -math.inf
-                            for i in range(3):
-                                for j in range(3):
-                                    if tablero[i][j] == 0:
-                                        tablero[i][j] = COMPUTADORA
-                                        mejor = max(mejor, minimax(tablero, profundidad + 1, HUMANO))
-                                        tablero[i][j] = 0
-                            return mejor
-                        else:
-                            peor = math.inf
-                            for i in range(3):
-                                for j in range(3):
-                                    if tablero[i][j] == 0:
-                                        tablero[i][j] = HUMANO
-                                        peor = min(peor, minimax(tablero, profundidad + 1, COMPUTADORA))
-                                        tablero[i][j] = 0
-                            return peor
-                    
-                    # Movimiento de la computadora
-                    def movimiento_computadora(tablero):
-                        mejor_movimiento = None
-                        mejor_valor = -math.inf
-                        for i in range(3):
-                            for j in range(3):
-                                if tablero[i][j] == 0:
-                                    tablero[i][j] = COMPUTADORA
-                                    valor = minimax(tablero, 0, HUMANO)
-                                    tablero[i][j] = 0
-                                    if valor > mejor_valor:
-                                        mejor_valor = valor
-                                        mejor_movimiento = (i, j)
-                        return mejor_movimiento
-                    
-                    # Imprimir el tablero
-                    def imprimir_tablero(tablero):
-                        for fila in tablero:
-                            print(fila)
-                    
-                    # Simulación de juego
-                    def juego():
-                        while True:
-                            imprimir_tablero(tablero)
-                            if tablero_lleno(tablero):
-                                print("Empate!")
-                                break
-                    
-                            # Movimiento del humano
-                            fila = int(input("Introduce la fila (0, 1, 2): "))
-                            col = int(input("Introduce la columna (0, 1, 2): "))
-                            if tablero[fila][col] == 0:
-                                tablero[fila][col] = HUMANO
-                            else:
-                                print("Movimiento no válido, intenta de nuevo.")
-                                continue
-                    
-                            if ganador(tablero, HUMANO):
-                                imprimir_tablero(tablero)
-                                print("¡Has ganado!")
-                                break
-                    
-                            # Movimiento de la computadora
-                            movimiento = movimiento_computadora(tablero)
-                            tablero[movimiento[0]][movimiento[1]] = COMPUTADORA
-                    
-                            if ganador(tablero, COMPUTADORA):
-                                imprimir_tablero(tablero)
-                                print("La computadora ha ganado.")
-                                break
-                    
-                    # Iniciar el juego
-                    juego()                    
+# Definir los jugadores
+HUMANO = -1
+COMPUTADORA = 1
+
+# Crear el tablero vacío
+tablero = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+]
+
+# Función para verificar si hay un ganador
+def ganador(tablero, jugador):
+    win_state = [
+        [tablero[0][0], tablero[0][1], tablero[0][2]],
+        [tablero[1][0], tablero[1][1], tablero[1][2]],
+        [tablero[2][0], tablero[2][1], tablero[2][2]],
+        [tablero[0][0], tablero[1][0], tablero[2][0]],
+        [tablero[0][1], tablero[1][1], tablero[2][1]],
+        [tablero[0][2], tablero[1][2], tablero[2][2]],
+        [tablero[0][0], tablero[1][1], tablero[2][2]],
+        [tablero[2][0], tablero[1][1], tablero[0][2]],
+    ]
+    return [jugador, jugador, jugador] in win_state
+
+# Función para verificar si el tablero está lleno
+def tablero_lleno(tablero):
+    for fila in tablero:
+        if 0 in fila:
+            return False
+    return True
+
+# Evaluar el estado del tablero
+def evaluar(tablero):
+    if ganador(tablero, COMPUTADORA):
+        return 1
+    elif ganador(tablero, HUMANO):
+        return -1
+    else:
+        return 0
+
+# Algoritmo Minimax
+def minimax(tablero, profundidad, jugador):
+    if ganador(tablero, COMPUTADORA):
+        return 1
+    if ganador(tablero, HUMANO):
+        return -1
+    if tablero_lleno(tablero):
+        return 0
+
+    if jugador == COMPUTADORA:
+        mejor = -math.inf
+        for i in range(3):
+            for j in range(3):
+                if tablero[i][j] == 0:
+                    tablero[i][j] = COMPUTADORA
+                    mejor = max(mejor, minimax(tablero, profundidad + 1, HUMANO))
+                    tablero[i][j] = 0
+        return mejor
+    else:
+        peor = math.inf
+        for i in range(3):
+            for j in range(3):
+                if tablero[i][j] == 0:
+                    tablero[i][j] = HUMANO
+                    peor = min(peor, minimax(tablero, profundidad + 1, COMPUTADORA))
+                    tablero[i][j] = 0
+        return peor
+
+# Movimiento de la computadora
+def movimiento_computadora(tablero):
+    mejor_movimiento = None
+    mejor_valor = -math.inf
+    for i in range(3):
+        for j in range(3):
+            if tablero[i][j] == 0:
+                tablero[i][j] = COMPUTADORA
+                valor = minimax(tablero, 0, HUMANO)
+                tablero[i][j] = 0
+                if valor > mejor_valor:
+                    mejor_valor = valor
+                    mejor_movimiento = (i, j)
+    return mejor_movimiento
+
+# Imprimir el tablero
+def imprimir_tablero(tablero):
+    for fila in tablero:
+        print(fila)
+
+# Simulación de juego
+def juego():
+    while True:
+        imprimir_tablero(tablero)
+        if tablero_lleno(tablero):
+            print("Empate!")
+            break
+
+        # Movimiento del humano
+        fila = int(input("Introduce la fila (0, 1, 2): "))
+        col = int(input("Introduce la columna (0, 1, 2): "))
+        if tablero[fila][col] == 0:
+            tablero[fila][col] = HUMANO
+        else:
+            print("Movimiento no válido, intenta de nuevo.")
+            continue
+
+        if ganador(tablero, HUMANO):
+            imprimir_tablero(tablero)
+            print("¡Has ganado!")
+            break
+
+        # Movimiento de la computadora
+        movimiento = movimiento_computadora(tablero)
+        tablero[movimiento[0]][movimiento[1]] = COMPUTADORA
+
+        if ganador(tablero, COMPUTADORA):
+            imprimir_tablero(tablero)
+            print("La computadora ha ganado.")
+            break
+
+# Iniciar el juego
+juego()                    
                 </code>
             </pre>
 
@@ -367,150 +367,150 @@
             </p>
             <pre>
                 <code>
-                    import math # Importa la biblioteca matemática para usar funciones.
+import math # Importa la biblioteca matemática para usar funciones.
 
-                    # Definir los jugadores
-                    HUMANO = -1 # Representa al jugador humano
-                    COMPUTADORA = 1 # Representa a la computadora
+# Definir los jugadores
+HUMANO = -1 # Representa al jugador humano
+COMPUTADORA = 1 # Representa a la computadora
 
-                    # Crear el tablero vacío
-                    tablero = [
-                        [0, 0, 0], # Fila 0
-                        [0, 0, 0], # Fila 1
-                        [0, 0, 0]  # Fila 2
-                    ]
+# Crear el tablero vacío
+tablero = [
+    [0, 0, 0], # Fila 0
+    [0, 0, 0], # Fila 1
+    [0, 0, 0]  # Fila 2
+]
 
-                    # Función para verificar si hay un ganador
-                    def ganador(tablero, jugador):
-                        win_state = [
-                        # Listar todas las combinaciones posibles de victoria
-                            [tablero[0][0], tablero[0][1], tablero[0][2]], # Fila 0
-                            [tablero[1][0], tablero[1][1], tablero[1][2]], # Fila 1
-                            [tablero[2][0], tablero[2][1], tablero[2][2]], # Fila 2
-                            [tablero[0][0], tablero[1][0], tablero[2][0]], # Columna 0
-                            [tablero[0][1], tablero[1][1], tablero[2][1]], # Columna 1
-                            [tablero[0][2], tablero[1][2], tablero[2][2]], # Columna 2
-                            [tablero[0][0], tablero[1][1], tablero[2][2]], # Diagonal principal
-                            [tablero[2][0], tablero[1][1], tablero[0][2]], # Diagonal inversa
-                        ]
-                        # Verifica si alguna de las combinaciones de victoria coincide con el jugador
-                        return [jugador, jugador, jugador] in win_state
+# Función para verificar si hay un ganador
+def ganador(tablero, jugador):
+    win_state = [
+    # Listar todas las combinaciones posibles de victoria
+        [tablero[0][0], tablero[0][1], tablero[0][2]], # Fila 0
+        [tablero[1][0], tablero[1][1], tablero[1][2]], # Fila 1
+        [tablero[2][0], tablero[2][1], tablero[2][2]], # Fila 2
+        [tablero[0][0], tablero[1][0], tablero[2][0]], # Columna 0
+        [tablero[0][1], tablero[1][1], tablero[2][1]], # Columna 1
+        [tablero[0][2], tablero[1][2], tablero[2][2]], # Columna 2
+        [tablero[0][0], tablero[1][1], tablero[2][2]], # Diagonal principal
+        [tablero[2][0], tablero[1][1], tablero[0][2]], # Diagonal inversa
+    ]
+    # Verifica si alguna de las combinaciones de victoria coincide con el jugador
+    return [jugador, jugador, jugador] in win_state
 
-                    # Función para verificar si el tablero está lleno
-                    def tablero_lleno(tablero):
-                        # Revisa cada fila del tablero
-                        for fila in tablero:
-                            if 0 in fila: # Si encuentra un espacio vacío (0), retorna False
-                                return False
-                        return True # Si no hay espacios vacíos, retorna True
+# Función para verificar si el tablero está lleno
+def tablero_lleno(tablero):
+    # Revisa cada fila del tablero
+    for fila in tablero:
+        if 0 in fila: # Si encuentra un espacio vacío (0), retorna False
+            return False
+    return True # Si no hay espacios vacíos, retorna True
 
-                    # Evaluar el estado del tablero
-                    def evaluar(tablero):
-                        # Evalúa si hay un ganador y retorna una puntuación
-                        if ganador(tablero, COMPUTADORA):
-                            return 1 # La computadora gana
-                        elif ganador(tablero, HUMANO):
-                            return -1 # El humano gana
-                        else:
-                            return 0 # Empate
+# Evaluar el estado del tablero
+def evaluar(tablero):
+    # Evalúa si hay un ganador y retorna una puntuación
+    if ganador(tablero, COMPUTADORA):
+        return 1 # La computadora gana
+    elif ganador(tablero, HUMANO):
+        return -1 # El humano gana
+    else:
+        return 0 # Empate
 
-                    # Algoritmo Minimax
-                    def minimax(tablero, profundidad, jugador):
-                        # Comprueba si hay un ganador en el estado actual
-                        if ganador(tablero, COMPUTADORA):
-                            return 1 # Retorna 1 si la computadora gana
-                        if ganador(tablero, HUMANO):
-                            return -1 # Retorna -1 si el humano gana
-                        if tablero_lleno(tablero):
-                            return 0 # Retorna 0 si hay un empate
+# Algoritmo Minimax
+def minimax(tablero, profundidad, jugador):
+    # Comprueba si hay un ganador en el estado actual
+    if ganador(tablero, COMPUTADORA):
+        return 1 # Retorna 1 si la computadora gana
+    if ganador(tablero, HUMANO):
+        return -1 # Retorna -1 si el humano gana
+    if tablero_lleno(tablero):
+        return 0 # Retorna 0 si hay un empate
 
-                        if jugador == COMPUTADORA: # Si es el turno de la computadora
-                            mejor = -math.inf # Inicializa la mejor puntuación en negativo infinito
-                            # Itera sobre cada celda del tablero
-                            for i in range(3):
-                                for j in range(3):
-                                    if tablero[i][j] == 0: # Si la celda está vacía
-                                        tablero[i][j] = COMPUTADORA # Realiza el movimiento de la computadora
-                                        # Evalúa la jugada recursivamente y actualiza la mejor puntuación
-                                        mejor = max(mejor, minimax(tablero, profundidad + 1, HUMANO))
-                                        tablero[i][j] = 0 # Deshace el movimiento
-                            return mejor # Retorna la mejor puntuación encontrada
-                        else: # Si es el turno del humano
-                            peor = math.inf # Inicializa la peor puntuación en positivo infinito
-                            # Itera sobre cada celda del tablero
-                            for i in range(3):
-                                for j in range(3):
-                                    if tablero[i][j] == 0: # Si la celda está vacía
-                                        tablero[i][j] = HUMANO # Realiza el movimiento del humano
-                                        # Evalúa la jugada recursivamente y actualiza la peor puntuación
-                                        peor = min(peor, minimax(tablero, profundidad + 1, COMPUTADORA))
-                                        tablero[i][j] = 0 # Deshace el movimiento
-                            return peor # Retorna la peor puntuación encontrada
+    if jugador == COMPUTADORA: # Si es el turno de la computadora
+        mejor = -math.inf # Inicializa la mejor puntuación en negativo infinito
+        # Itera sobre cada celda del tablero
+        for i in range(3):
+            for j in range(3):
+                if tablero[i][j] == 0: # Si la celda está vacía
+                    tablero[i][j] = COMPUTADORA # Realiza el movimiento de la computadora
+                    # Evalúa la jugada recursivamente y actualiza la mejor puntuación
+                    mejor = max(mejor, minimax(tablero, profundidad + 1, HUMANO))
+                    tablero[i][j] = 0 # Deshace el movimiento
+        return mejor # Retorna la mejor puntuación encontrada
+    else: # Si es el turno del humano
+        peor = math.inf # Inicializa la peor puntuación en positivo infinito
+        # Itera sobre cada celda del tablero
+        for i in range(3):
+            for j in range(3):
+                if tablero[i][j] == 0: # Si la celda está vacía
+                    tablero[i][j] = HUMANO # Realiza el movimiento del humano
+                    # Evalúa la jugada recursivamente y actualiza la peor puntuación
+                    peor = min(peor, minimax(tablero, profundidad + 1, COMPUTADORA))
+                    tablero[i][j] = 0 # Deshace el movimiento
+        return peor # Retorna la peor puntuación encontrada
 
-                    # Movimiento de la computadora
-                    def movimiento_computadora(tablero):
-                        mejor_movimiento = None # Inicializa el mejor movimiento como None
-                        mejor_valor = -math.inf # Inicializa el mejor valor en negativo infinito
-                        # Itera sobre cada celda del tablero
-                        for i in range(3): 
-                            for j in range(3):
-                                if tablero[i][j] == 0: # Si la celda está vacía
-                                    tablero[i][j] = COMPUTADORA # Realiza el movimiento de la computadora
-                                    # Evalúa el valor de la jugada utilizando minimax
-                                    valor = minimax(tablero, 0, HUMANO)
-                                    tablero[i][j] = 0 # Deshace el movimiento
-                                    # Si el valor de esta jugada es mejor que el anterior
-                                    if valor > mejor_valor:
-                                        mejor_valor = valor # Actualiza el mejor valor
-                                        mejor_movimiento = (i, j) # Guarda el mejor movimiento
-                        return mejor_movimiento # Retorna el mejor movimiento encontrado
+# Movimiento de la computadora
+def movimiento_computadora(tablero):
+    mejor_movimiento = None # Inicializa el mejor movimiento como None
+    mejor_valor = -math.inf # Inicializa el mejor valor en negativo infinito
+    # Itera sobre cada celda del tablero
+    for i in range(3): 
+        for j in range(3):
+            if tablero[i][j] == 0: # Si la celda está vacía
+                tablero[i][j] = COMPUTADORA # Realiza el movimiento de la computadora
+                # Evalúa el valor de la jugada utilizando minimax
+                valor = minimax(tablero, 0, HUMANO)
+                tablero[i][j] = 0 # Deshace el movimiento
+                # Si el valor de esta jugada es mejor que el anterior
+                if valor > mejor_valor:
+                    mejor_valor = valor # Actualiza el mejor valor
+                    mejor_movimiento = (i, j) # Guarda el mejor movimiento
+    return mejor_movimiento # Retorna el mejor movimiento encontrado
 
-                    # Imprimir el tablero
-                    def imprimir_tablero(tablero):
-                        # Imprime cada fila del tablero en la consola
-                        for fila in tablero:
-                            print(fila)
+# Imprimir el tablero
+def imprimir_tablero(tablero):
+    # Imprime cada fila del tablero en la consola
+    for fila in tablero:
+        print(fila)
 
-                    # Simulación de juego
-                    def juego():
-                        while True: # Inicia un bucle infinito para el juego
-                            imprimir_tablero(tablero) # Muestra el estado actual del tablero
-                            if tablero_lleno(tablero): # Verifica si el tablero está lleno
-                                print("Empate!") # Informa de un empate
-                                break # Termina el juego
+# Simulación de juego
+def juego():
+    while True: # Inicia un bucle infinito para el juego
+        imprimir_tablero(tablero) # Muestra el estado actual del tablero
+        if tablero_lleno(tablero): # Verifica si el tablero está lleno
+            print("Empate!") # Informa de un empate
+            break # Termina el juego
 
-                            # Movimiento del humano
-                            # Solicita al jugador humano que ingrese su movimiento
-                            fila = int(input("Introduce la fila (0, 1, 2): "))
-                            col = int(input("Introduce la columna (0, 1, 2): "))
-                            if tablero[fila][col] == 0:  # Verifica si el movimiento es válido
-                                tablero[fila][col] = HUMANO  # Realiza el movimiento del humano
-                            else:
-                                print("Movimiento no válido, intenta de nuevo.")  # Informa de un movimiento inválido
-                                continue  # Vuelve al inicio del ciclo
+        # Movimiento del humano
+        # Solicita al jugador humano que ingrese su movimiento
+        fila = int(input("Introduce la fila (0, 1, 2): "))
+        col = int(input("Introduce la columna (0, 1, 2): "))
+        if tablero[fila][col] == 0:  # Verifica si el movimiento es válido
+            tablero[fila][col] = HUMANO  # Realiza el movimiento del humano
+        else:
+            print("Movimiento no válido, intenta de nuevo.")  # Informa de un movimiento inválido
+            continue  # Vuelve al inicio del ciclo
 
-                            # Verifica si el humano ha ganado
-                            if ganador(tablero, HUMANO):
-                                imprimir_tablero(tablero)  # Muestra el tablero
-                                print("¡Has ganado!")  # Informa de la victoria del humano
-                                break  # Termina el juego
+        # Verifica si el humano ha ganado
+        if ganador(tablero, HUMANO):
+            imprimir_tablero(tablero)  # Muestra el tablero
+            print("¡Has ganado!")  # Informa de la victoria del humano
+            break  # Termina el juego
 
-                            # Movimiento de la computadora
-                            movimiento = movimiento_computadora(tablero)  # Calcula el movimiento de la computadora
-                            if movimiento is None:  # Verifica si hay un movimiento válido
-                                print("No hay movimientos disponibles. Empate!")  # Informa de un empate
-                                break  # Termina el juego
-                            tablero[movimiento[0]][movimiento[1]] = COMPUTADORA  # Realiza el movimiento de la computadora
+        # Movimiento de la computadora
+        movimiento = movimiento_computadora(tablero)  # Calcula el movimiento de la computadora
+        if movimiento is None:  # Verifica si hay un movimiento válido
+            print("No hay movimientos disponibles. Empate!")  # Informa de un empate
+            break  # Termina el juego
+        tablero[movimiento[0]][movimiento[1]] = COMPUTADORA  # Realiza el movimiento de la computadora
 
-                            # Verifica si la computadora ha ganado
-                            if ganador(tablero, COMPUTADORA):
-                                imprimir_tablero(tablero)  # Muestra el tablero
-                                print("La computadora ha ganado.")  # Informa de la victoria de la computadora
-                                break  # Termina el juego
+        # Verifica si la computadora ha ganado
+        if ganador(tablero, COMPUTADORA):
+            imprimir_tablero(tablero)  # Muestra el tablero
+            print("La computadora ha ganado.")  # Informa de la victoria de la computadora
+            break  # Termina el juego
 
 
-                    # Iniciar el juego
-                    juego()  # Llama a la función juego para comenzar la partida
+# Iniciar el juego
+juego()  # Llama a la función juego para comenzar la partida
                 </code>
             </pre>
 
@@ -541,7 +541,462 @@
             <p></p>
         </div>
 
-    </body>
+        <h2>Parcial Inteligencia Artificial 24 - 10 - 2024</h2>
+            <h3> Punto 5: Comentar código del archivo logic.py </h3>
 
-    
+            <pre>
+                <code>
+import math # Importa la biblioteca matemática para usar funciones.
+
+# Definir los jugadores
+HUMANO = -1 # Representa al jugador humano
+COMPUTADORA = 1 # Representa a la computadora
+
+# Crear el tablero vacío
+tablero = [
+    [0, 0, 0], # Fila 0
+    [0, 0, 0], # Fila 1
+    [0, 0, 0]  # Fila 2
+]
+
+# Función para verificar si hay un ganador
+def ganador(tablero, jugador):
+    win_state = [
+    # Listar todas las combinaciones posibles de victoria
+        [tablero[0][0], tablero[0][1], tablero[0][2]], # Fila 0
+        [tablero[1][0], tablero[1][1], tablero[1][2]], # Fila 1
+        [tablero[2][0], tablero[2][1], tablero[2][2]], # Fila 2
+        [tablero[0][0], tablero[1][0], tablero[2][0]], # Columna 0
+        [tablero[0][1], tablero[1][1], tablero[2][1]], # Columna 1
+        [tablero[0][2], tablero[1][2], tablero[2][2]], # Columna 2
+        [tablero[0][0], tablero[1][1], tablero[2][2]], # Diagonal principal
+        [tablero[2][0], tablero[1][1], tablero[0][2]], # Diagonal inversa
+    ]
+    # Verifica si alguna de las combinaciones de victoria coincide con el jugador
+    return [jugador, jugador, jugador] in win_state
+
+# Función para verificar si el tablero está lleno
+def tablero_lleno(tablero):
+    # Revisa cada fila del tablero
+    for fila in tablero:
+        if 0 in fila: # Si encuentra un espacio vacío (0), retorna False
+            return False
+    return True # Si no hay espacios vacíos, retorna True
+
+# Evaluar el estado del tablero
+def evaluar(tablero):
+    # Evalúa si hay un ganador y retorna una puntuación
+    if ganador(tablero, COMPUTADORA):
+        return 1 # La computadora gana
+    elif ganador(tablero, HUMANO):
+        return -1 # El humano gana
+    else:
+        return 0 # Empate
+
+# Algoritmo Minimax
+def minimax(tablero, profundidad, jugador):
+    # Comprueba si hay un ganador en el estado actual
+    if ganador(tablero, COMPUTADORA):
+        return 1 # Retorna 1 si la computadora gana
+    if ganador(tablero, HUMANO):
+        return -1 # Retorna -1 si el humano gana
+    if tablero_lleno(tablero):
+        return 0 # Retorna 0 si hay un empate
+
+    if jugador == COMPUTADORA: # Si es el turno de la computadora
+        mejor = -math.inf # Inicializa la mejor puntuación en negativo infinito
+        # Itera sobre cada celda del tablero
+        for i in range(3):
+            for j in range(3):
+                if tablero[i][j] == 0: # Si la celda está vacía
+                    tablero[i][j] = COMPUTADORA # Realiza el movimiento de la computadora
+                    # Evalúa la jugada recursivamente y actualiza la mejor puntuación
+                    mejor = max(mejor, minimax(tablero, profundidad + 1, HUMANO))
+                    tablero[i][j] = 0 # Deshace el movimiento
+        return mejor # Retorna la mejor puntuación encontrada
+    else: # Si es el turno del humano
+        peor = math.inf # Inicializa la peor puntuación en positivo infinito
+        # Itera sobre cada celda del tablero
+        for i in range(3):
+            for j in range(3):
+                if tablero[i][j] == 0: # Si la celda está vacía
+                    tablero[i][j] = HUMANO # Realiza el movimiento del humano
+                    # Evalúa la jugada recursivamente y actualiza la peor puntuación
+                    peor = min(peor, minimax(tablero, profundidad + 1, COMPUTADORA))
+                    tablero[i][j] = 0 # Deshace el movimiento
+        return peor # Retorna la peor puntuación encontrada
+
+# Movimiento de la computadora
+def movimiento_computadora(tablero):
+    mejor_movimiento = None # Inicializa el mejor movimiento como None
+    mejor_valor = -math.inf # Inicializa el mejor valor en negativo infinito
+    # Itera sobre cada celda del tablero
+    for i in range(3): 
+        for j in range(3):
+            if tablero[i][j] == 0: # Si la celda está vacía
+                tablero[i][j] = COMPUTADORA # Realiza el movimiento de la computadora
+                # Evalúa el valor de la jugada utilizando minimax
+                valor = minimax(tablero, 0, HUMANO)
+                tablero[i][j] = 0 # Deshace el movimiento
+                # Si el valor de esta jugada es mejor que el anterior
+                if valor > mejor_valor:
+                    mejor_valor = valor # Actualiza el mejor valor
+                    mejor_movimiento = (i, j) # Guarda el mejor movimiento
+    return mejor_movimiento # Retorna el mejor movimiento encontrado
+
+# Imprimir el tablero
+def imprimir_tablero(tablero):
+    # Imprime cada fila del tablero en la consola
+    for fila in tablero:
+        print(fila)
+
+# Simulación de juego
+def juego():
+    while True: # Inicia un bucle infinito para el juego
+        imprimir_tablero(tablero) # Muestra el estado actual del tablero
+        if tablero_lleno(tablero): # Verifica si el tablero está lleno
+            print("Empate!") # Informa de un empate
+            break # Termina el juego
+
+        # Movimiento del humano
+        # Solicita al jugador humano que ingrese su movimiento
+        fila = int(input("Introduce la fila (0, 1, 2): "))
+        col = int(input("Introduce la columna (0, 1, 2): "))
+        if tablero[fila][col] == 0:  # Verifica si el movimiento es válido
+            tablero[fila][col] = HUMANO  # Realiza el movimiento del humano
+        else:
+            print("Movimiento no válido, intenta de nuevo.")  # Informa de un movimiento inválido
+            continue  # Vuelve al inicio del ciclo
+
+        # Verifica si el humano ha ganado
+        if ganador(tablero, HUMANO):
+            imprimir_tablero(tablero)  # Muestra el tablero
+            print("¡Has ganado!")  # Informa de la victoria del humano
+            break  # Termina el juego
+
+        # Movimiento de la computadora
+        movimiento = movimiento_computadora(tablero)  # Calcula el movimiento de la computadora
+        if movimiento is None:  # Verifica si hay un movimiento válido
+            print("No hay movimientos disponibles. Empate!")  # Informa de un empate
+            break  # Termina el juego
+        tablero[movimiento[0]][movimiento[1]] = COMPUTADORA  # Realiza el movimiento de la computadora
+
+        # Verifica si la computadora ha ganado
+        if ganador(tablero, COMPUTADORA):
+            imprimir_tablero(tablero)  # Muestra el tablero
+            print("La computadora ha ganado.")  # Informa de la victoria de la computadora
+            break  # Termina el juego
+
+
+# Iniciar el juego
+juego()  # Llama a la función juego para comenzar la partida
+                </code>
+            </pre>
+
+            <h3> Punto 6: Editar archivo harry.py con la diapositiva 359 </h3>
+            
+            <h3> Corrección archivo logic.py </h3>
+            <p> El archivo logic.py presenta un error a la hora de ejecutar el código harry, a continuación se presenta una propesta de correción además del código harry funcionando como es requerido.</p>
+            
+            <h3>Código logic.py corregido</h3>
+            <pre>
+                <code>    
+import itertools
+
+
+class Sentence:
+    """
+    Clase base para representar una oración lógica.
+    """
+
+    def evaluate(self, model):
+        raise Exception("nada que evaluar")
+
+    def formula(self):
+        return ""
+
+    def symbols(self):
+        return set()
+
+    @classmethod
+    def validate(cls, sentence):
+        if not isinstance(sentence, Sentence):
+            raise TypeError("debe ser una oración lógica")
+
+    @classmethod
+    def parenthesize(cls, s):
+        def balanced(s):
+            count = 0
+            for c in s:
+                if c == "(":
+                    count += 1
+                elif c == ")":
+                    if count <= 0:
+                        return False
+                    count -= 1
+            return count == 0
+
+        if not len(s) or s.isalpha() or (
+            s[0] == "(" and s[-1] == ")" and balanced(s[1:-1])
+        ):
+            return s
+        else:
+            return f"({s})"
+
+
+class Symbol(Sentence):
+    """
+    Representa un símbolo lógico.
+    """
+
+    def __init__(self, name):
+        self.name = name
+
+    def __eq__(self, other):
+        return isinstance(other, Symbol) and self.name == other.name
+
+    def __hash__(self):
+        return hash(("symbol", self.name))
+
+    def __repr__(self):
+        return self.name
+
+    def evaluate(self, model):
+        try:
+            return bool(model[self.name])
+        except KeyError:
+            raise Exception(f"variable {self.name} no está en el modelo")
+
+    def formula(self):
+        return self.name
+
+    def symbols(self):
+        return {self.name}
+
+
+class Not(Sentence):
+    """
+    Representa una negación lógica.
+    """
+    def __init__(self, operand):
+        Sentence.validate(operand)
+        self.operand = operand
+
+    def __eq__(self, other):
+        return isinstance(other, Not) and self.operand == other.operand
+
+    def __hash__(self):
+        return hash(("not", hash(self.operand)))
+
+    def __repr__(self):
+        return f"Not({self.operand})"
+
+    def evaluate(self, model):
+        return not self.operand.evaluate(model)
+
+    def formula(self):
+        return "¬" + Sentence.parenthesize(self.operand.formula())
+
+    def symbols(self):
+        return self.operand.symbols()
+
+
+class And(Sentence):
+    """
+    Representa una conjunción lógica (Y).
+    """
+    def __init__(self, *conjuncts):
+        for conjunct in conjuncts:
+            Sentence.validate(conjunct)
+        self.conjuncts = list(conjuncts)
+
+    def __eq__(self, other):
+        return isinstance(other, And) and self.conjuncts == other.conjuncts
+
+    def __hash__(self):
+        return hash(
+            ("and", tuple(hash(conjunct) for conjunct in self.conjuncts))
+        )
+
+    def __repr__(self):
+        conjunctions = ", ".join(
+            [str(conjunct) for conjunct in self.conjuncts]
+        )
+        return f"And({conjunctions})"
+
+    def add(self, conjunct):
+        Sentence.validate(conjunct)
+        self.conjuncts.append(conjunct)
+
+    def evaluate(self, model):
+        return all(conjunct.evaluate(model) for conjunct in self.conjuncts)
+
+    def formula(self):
+        if len(self.conjuncts) == 1:
+            return self.conjuncts[0].formula()
+        return " ∧ ".join([Sentence.parenthesize(conjunct.formula())
+                            for conjunct in self.conjuncts])
+
+    def symbols(self):
+        return set.union(*[conjunct.symbols() for conjunct in self.conjuncts])
+
+
+class Or(Sentence):
+    """
+    Representa una disyunción lógica (O).
+    """
+    def __init__(self, *disjuncts):
+        for disjunct in disjuncts:
+            Sentence.validate(disjunct)
+        self.disjuncts = list(disjuncts)
+
+    def __eq__(self, other):
+        return isinstance(other, Or) and self.disjuncts == other.disjuncts
+
+    def __hash__(self):
+        return hash(
+            ("or", tuple(hash(disjunct) for disjunct in self.disjuncts))
+        )
+
+    def __repr__(self):
+        disjuncts = ", ".join([str(disjunct) for disjunct in self.disjuncts])
+        return f"Or({disjuncts})"
+
+    def evaluate(self, model):
+        return any(disjunct.evaluate(model) for disjunct in self.disjuncts)
+
+    def formula(self):
+        if len(self.disjuncts) == 1:
+            return self.disjuncts[0].formula()
+        return " ∨ ".join([Sentence.parenthesize(disjunct.formula())
+                            for disjunct in self.disjuncts])
+
+    def symbols(self):
+        return set.union(*[disjunct.symbols() for disjunct in self.disjuncts])
+
+
+class Implication(Sentence):
+    """
+    Representa una implicación lógica (si... entonces...).
+    """
+    def __init__(self, antecedent, consequent):
+        Sentence.validate(antecedent)
+        Sentence.validate(consequent)
+        self.antecedent = antecedent
+        self.consequent = consequent
+
+    def __eq__(self, other):
+        return (isinstance(other, Implication)
+                and self.antecedent == other.antecedent
+                and self.consequent == other.consequent)
+
+    def __hash__(self):
+        return hash(("implies", hash(self.antecedent), hash(self.consequent)))
+
+    def __repr__(self):
+        return f"Implication({self.antecedent}, {self.consequent})"
+
+    def evaluate(self, model):
+        return ((not self.antecedent.evaluate(model))
+                or self.consequent.evaluate(model))
+
+    def formula(self):
+        antecedent = Sentence.parenthesize(self.antecedent.formula())
+        consequent = Sentence.parenthesize(self.consequent.formula())
+        return f"{antecedent} => {consequent}"
+
+    def symbols(self):
+        return set.union(self.antecedent.symbols(), self.consequent.symbols())
+
+
+class Biconditional(Sentence):
+    """
+    Representa una bicondicional lógica (si y solo si).
+    """
+    def __init__(self, left, right):
+        Sentence.validate(left)
+        Sentence.validate(right)
+        self.left = left
+        self.right = right
+
+    def __eq__(self, other):
+        return (isinstance(other, Biconditional)
+                and self.left == other.left
+                and self.right == other.right)
+
+    def __hash__(self):
+        return hash(("biconditional", hash(self.left), hash(self.right)))
+
+    def __repr__(self):
+        return f"Biconditional({self.left}, {self.right})"
+
+    def evaluate(self, model):
+        return ((self.left.evaluate(model)
+                    and self.right.evaluate(model))
+                or (not self.left.evaluate(model)
+                    and not self.right.evaluate(model)))
+
+    def formula(self):
+        left = Sentence.parenthesize(str(self.left))
+        right = Sentence.parenthesize(str(self.right))
+        return f"{left} <=> {right}"
+
+    def symbols(self):
+        return set.union(self.left.symbols(), self.right.symbols())
+
+
+def model_check(knowledge, query):
+    """
+    Verifica si la base de conocimiento implica una consulta.
+    """
+
+    def check_all(knowledge, query, symbols, model):
+        if not symbols:
+            if knowledge.evaluate(model):
+                return query.evaluate(model)
+            return True
+        else:
+            remaining = symbols.copy()
+            p = remaining.pop()
+
+            model_true = model.copy()
+            model_true[p] = True
+
+            model_false = model.copy()
+            model_false[p] = False
+
+            return (check_all(knowledge, query, remaining, model_true) and
+                    check_all(knowledge, query, remaining, model_false))
+
+    symbols = set.union(knowledge.symbols(), query.symbols())
+    return check_all(knowledge, query, symbols, {})                                   
+                </code>
+            </pre>
+
+            <h3>Código harry.py modificado con requerimientos de diapositiva 359</h3>
+
+            <pre>
+                <code>
+from logic import *
+
+rain = Symbol("rain")
+bbc = Symbol("bbc")
+unimayor = Symbol("unimayor")
+
+knowledge = And(
+    Implication(Not(rain), bbc),  
+    Or(bbc, unimayor),            
+    Not(And(bbc, unimayor)),      
+    unimayor                       
+)
+
+print("¿Los estudiantes visitaron BBC?", model_check(knowledge, bbc))
+print("¿Está lloviendo?", model_check(knowledge, rain))                    
+                </code>
+            </pre>
+            <b></b>
+            <h3>Resultado de la proposición</h3>
+            <img src="https://github.com/JuanBurbanoUnimayor/InteligenciaArtificial/blob/main/ResultadoPunto6.png?raw=true" alt="" width="300" height="150">
+        </div>
+    </body>
 </html>
